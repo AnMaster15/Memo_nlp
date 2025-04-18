@@ -1,7 +1,5 @@
 # Speech Analysis API 🎤📊
 
-[![GitHub Actions](https://github.com/AnMaster15/Memo_nlp.git/actions/workflows/cloudbuild.yaml/badge.svg)](https://github.com/AnMaster15/Memo_nlp.git/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 FastAPI service for analyzing speech patterns to detect cognitive decline markers.
 
