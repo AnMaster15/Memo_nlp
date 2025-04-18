@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="report-container">
+    <div class="report-header text-center mb-5">
+        <h1>MemoTag Speech Analysis Report</h1>
+        <h3>Batch ID: {{ batch_id }}</h3>
+        <p class="text-muted">Generated on {{ generated_at }}</p>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Summary Statistics</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <div class="stat-value">{{ summary.sample_count }}</div>
+                                <div class="stat-label">Samples Analyzed</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <div class="stat-value">{{ "%.1f"|format(summary.avg_risk) }}</div>
+                                <div class="stat-label">Average Risk</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <div class="stat-value">{{ summary.high_risk_count }}</div>
+                                <div class="stat-label">High Risk Samples</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <div class="stat-value">{{ summary.anomaly_count }}</div>
+                                <div class="stat-label">Anomalies Detected</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Risk Score Distribution</h4>
+                </div>
+                <div class="card-body">
+                    <img src="data:image/png;base64,{{ visualizations.risk_score_distribution }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-5">
+        <div class="card-header bg-primary text-white">
+            <h4>Key Insights</h4>
+        </div>
+        <div class="card-body">
+            <ul class="insights-list">
+                {% for insight in insights %}
+                <li>{{ insight }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Feature Correlation</h4>
+                </div>
+                <div class="card-body">
+                    <img src="data:image/png;base64,{{ visualizations.correlation_heatmap }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Feature Importance</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="featureImportanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-5">
+        <div class="card-header bg-primary text-white">
+            <h4>Detailed Metrics</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Average Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for feature, value in feature_avgs.items() %}
+                        <tr>
+                            <td>{{ feature.replace('_', ' ').title() }}</td>
+                            <td>{{ "%.2f"|format(value) }}</td>
+                            <td>{{ feature_descriptions.get(feature, '') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+{% if feature_names and feature_importances %}
+<script>
+    const featureNames = 0 ;
+    const featureScores = 0;
+
+    const featureImportanceCtx = document.getElementById('featureImportanceChart').getContext('2d');
+    const featureImportanceChart = new Chart(featureImportanceCtx, {
+        type: 'bar',
+        data: {
+            labels: featureNames,
+            datasets: [{
+                label: 'Importance Score',
+                data: featureScores,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 1
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+
+{% endblock %}

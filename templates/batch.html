@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h2 class="text-center">Batch Speech Analysis</h2>
+            </div>
+            <div class="card-body">
+                <form id="batchForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="audioFiles" class="form-label">Upload Multiple Audio Files (WAV format)</label>
+                        <input class="form-control" type="file" id="audioFiles" name="files" accept=".wav" multiple required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Analyze Batch</button>
+                </form>
+                
+                <div id="batchStatus" class="mt-4" style="display: none;">
+                    <div class="progress mb-3">
+                        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <div class="text-center" id="statusMessage"></div>
+                </div>
+                
+                <div id="batchResults" class="mt-4" style="display: none;">
+                    <h3 class="text-center mb-4">Batch Analysis Results</h3>
+                    <div class="text-center mb-3">
+                        <a id="reportLink" href="#" class="btn btn-success">View Full Report</a>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-secondary text-white">
+                                    Risk Score Distribution
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="riskDistributionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-secondary text-white">
+                                    Anomaly Detection
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="anomalyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            Key Insights
+                        </div>
+                        <div class="card-body">
+                            <ul id="insightsList" class="list-group"></ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            Sample Results
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Sample</th>
+                                            <th>Risk Score</th>
+                                            <th>Anomaly</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="samplesTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/batch.js"></script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h2 class="text-center">Speech Analysis for Cognitive Markers</h2>
+            </div>
+            <div class="card-body">
+                <form id="analysisForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="audioFile" class="form-label">Upload Speech Audio (WAV format)</label>
+                        <input class="form-control" type="file" id="audioFile" name="audio_file" accept=".wav" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Analyze</button>
+                </form>
+                
+                <div id="results" class="mt-4" style="display: none;">
+                    <h3 class="text-center mb-4">Analysis Results</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-secondary text-white">
+                                    Risk Assessment
+                                </div>
+                                <div class="card-body">
+                                    <div class="risk-score-container">
+                                        <div class="risk-circle">
+                                            <div class="risk-value" id="riskScore">0</div>
+                                            <div class="risk-label">Risk Score</div>
+                                        </div>
+                                        <div class="risk-description" id="riskDescription"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-4">
+                                <div class="card-header bg-secondary text-white">
+                                    Transcription
+                                </div>
+                                <div class="card-body">
+                                    <div class="transcription-box" id="transcription"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-secondary text-white">
+                                    Key Indicators
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="indicatorsChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header bg-secondary text-white">
+                                    Detailed Metrics
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Metric</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="metricsTable">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/analysis.js"></script>
+{% endblock %}

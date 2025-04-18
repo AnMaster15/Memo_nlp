@@ -1,0 +1,24 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: speech-analysis-api
+spec:
+  template:
+    spec:
+      containers:
+        - image: gcr.io/speech-analysis-visuals/speech-api
+          env:
+            - name: BUCKET_NAME
+              value: "speech-analysis-visualizations"
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: 1
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 240
+            periodSeconds: 240
+            failureThreshold: 1
+          ports:
+            - containerPort: 8080
